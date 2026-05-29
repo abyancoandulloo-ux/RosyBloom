@@ -113,6 +113,13 @@
             width: 100%;
         }
 
+        .menu-icon {
+            font-size: 24px;
+            color: var(--dark-rose);
+            cursor: pointer;
+            display: none;
+        }
+
         /* --- Contact Hero Section --- */
         .contact-hero {
             background: linear-gradient(135deg, #ffeef2 0%, #fff 100%);
@@ -143,7 +150,7 @@
 
         /* --- Contact Section Layout --- */
         .contact-wrapper {
-            padding: 80px 0;
+            padding: 80px 0 40px 0;
         }
 
         .contact-grid {
@@ -248,7 +255,8 @@
             color: #666;
             line-height: 24px;
             max-width: 460px;
-            margin: 0 auto 20px auto;
+            margin: 0 auto;
+            position: relative;
         }
 
         .flower-badge-row {
@@ -271,6 +279,28 @@
         .flower-badge i {
             margin-right: 5px;
             color: var(--primary-pink);
+        }
+
+        /* --- Maps Interactive Studio Section --- */
+        .studio-map-section {
+            padding: 20px 0 80px 0;
+        }
+
+        .map-card-frame {
+            background-color: #ffffff;
+            border: 1px solid rgba(255, 107, 139, 0.12);
+            box-shadow: 0 12px 35px rgba(216, 27, 96, 0.04);
+            border-radius: 24px;
+            padding: 20px;
+            overflow: hidden;
+        }
+
+        .map-card-frame iframe {
+            width: 100%;
+            height: 450px;
+            border: 0;
+            border-radius: 16px;
+            display: block;
         }
 
         /* --- Footer Section --- */
@@ -376,6 +406,21 @@
 
         /* --- Responsive Adjustments --- */
         @media (max-width: 768px) {
+            .menu-icon {
+                display: block;
+            }
+            nav {
+                position: absolute;
+                top: 100%;
+                left: 0;
+                width: 100%;
+                background-color: #ffffff;
+                display: none;
+                box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+            }
+            nav.active {
+                display: block;
+            }
             .contact-grid {
                 grid-template-columns: 1fr;
                 gap: 40px;
@@ -384,10 +429,16 @@
                 font-size: 36px;
             }
             nav ul {
-                margin-top: 15px;
+                flex-direction: column;
+                align-items: center;
+                padding: 25px 0;
             }
             nav ul li {
-                margin: 0 15px;
+                margin: 15px 0;
+                margin-left: 0;
+            }
+            .map-card-frame iframe {
+                height: 350px;
             }
         }
     </style>
@@ -403,14 +454,15 @@
                         <img src="logo.jpg" alt="RosyBloom Corporate Logo" onerror="this.style.display='none'">RosyBloom
                     </a>
                 </div>
-                <nav>
-                    <ul id="MenuItems">
+                <nav id="MenuItems">
+                    <ul>
                         <li><a href="index.html">Home</a></li>
                         <li><a href="product.html">Products</a></li>
                         <li><a href="contact.html" class="active">Contact</a></li>
                         <li><a href="manager.html" style="color: var(--dark-rose); font-weight: 600;"><i class="fa-solid fa-lock"></i> Manager Hub</a></li>
                     </ul>
                 </nav>
+                <i class="fa-solid fa-bars menu-icon" onclick="menutoggle()"></i>
             </div>
         </div>
     </header>
@@ -472,6 +524,14 @@
         </div>
     </section>
 
+    <section class="studio-map-section">
+        <div class="container">
+            <div class="map-card-frame">
+                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3743.518635544778!2d57.4816999!3d-20.2374246!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x217c5b1b4b5a3e1d%3A0x8670a30b5030f0f1!2sAvenue%20Belle%20Rose%2C%20Quatre%20Bornes!5e0!3m2!1sen!2smu!4v1716942000000!5m2!1sen!2smu" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+            </div>
+        </div>
+    </section>
+
     <footer>
         <div class="container">
             <div class="footer-row">
@@ -499,9 +559,15 @@
                 </div>
             </div>
             <hr>
-            <p class="copyright">&copy; 2026 RosyBloom Flowers. Designed for elegance.</p>
+            <p class="copyright">© 2026 RosyBloom Flowers. Designed for elegance.</p>
         </div>
     </footer>
 
+    <script>
+        // --- NAVIGATION MENU MOBILE TOGGLE ---
+        function menutoggle() {
+            document.getElementById("MenuItems").classList.toggle("active");
+        }
+    </script>
 </body>
 </html>
