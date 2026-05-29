@@ -139,6 +139,8 @@
         .receipt-header { text-align: center; margin-bottom: 25px; }
         .receipt-header i { font-size: 40px; color: #2b8a3e; margin-bottom: 12px; }
         .receipt-header h2 { font-family: 'Playfair Display', serif; color: var(--deep-rose); }
+        .receipt-header p { font-size: 13px; color: #706265; margin-top: 4px; }
+        
         .receipt-meta { display: flex; justify-content: space-between; font-size: 12px; color: #8c767a; border-bottom: 1px dashed #e8e0e2; padding-bottom: 15px; margin-bottom: 20px; }
         
         .receipt-items { display: flex; flex-direction: column; gap: 12px; margin-bottom: 20px; }
@@ -234,7 +236,7 @@
             <div class="receipt-header">
                 <i class="fa-solid fa-circle-check"></i>
                 <h2>Order Details</h2>
-                <p style="font-size: 13px; color: #706265; margin-top: 4px;">Click below to submit your request via WhatsApp.</p>
+                <p>Click below to submit your request via WhatsApp.</p>
             </div>
             <div class="receipt-meta">
                 <span id="receiptOrderNum">Receipt #: RB----</span>
@@ -416,7 +418,6 @@
             receiptContainer.innerHTML = "";
             let runningReceiptTotal = 0;
 
-            // Generate structured format layout for messaging logs
             let textTemplate = `🌸 *New RosyBloom Bouquet Order* 🌸\n\n`;
             textTemplate += `*Order Reference:* ${orderNumber}\n`;
             textTemplate += `*Date:* ${orderDate}\n`;
@@ -455,8 +456,7 @@
         }
 
         function sendToWhatsAppAndClearCart() {
-            // Your configured corporate mobile routing interface address
-            const managerNumber = "23054227050"; 
+            const managerNumber = "23058389088"; 
             const outboundLink = `https://api.whatsapp.com/send?phone=${managerNumber}&text=${compiledWhatsAppText}`;
             
             window.open(outboundLink, '_blank');
