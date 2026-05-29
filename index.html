@@ -33,7 +33,7 @@
         header { background-color: #ffffff; box-shadow: 0 4px 25px rgba(184, 29, 74, 0.06); position: sticky; top: 0; z-index: 1000; }
         .navbar { display: flex; justify-content: space-between; align-items: center; padding: 18px 0; }
         .logo a { display: flex; align-items: center; text-decoration: none; color: var(--deep-rose); font-size: 30px; font-weight: 800; }
-        .logo i { margin-right: 12px; font-size: 26px; color: var(--primary-rose); animation: float 3s ease-in-out infinite; }
+        .logo img { width: 35px; height: 35px; object-fit: cover; border-radius: 6px; margin-right: 12px; }
         nav ul { display: flex; list-style: none; }
         nav ul li { margin-left: 40px; }
         nav ul li a { text-decoration: none; color: var(--charcoal); font-weight: 500; font-size: 15px; text-transform: uppercase; letter-spacing: 1px; transition: var(--transition-smooth); }
@@ -117,7 +117,6 @@
         .copyright { text-align: center; padding-top: 30px; border-top: 1px solid #382328; font-size: 13px; color: #6e5a5e; }
 
         /* Animations & Responsive */
-        @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
         @keyframes morph {
             0%, 100% { border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%; }
             50% { border-radius: 30% 60% 70% 40% / 50% 60% 30% 60%; }
@@ -144,7 +143,11 @@
     <header>
         <div class="container">
             <div class="navbar">
-                <div class="logo"><a href="index.html"><i class="fa-solid fa-seedling"></i>RosyBloom</a></div>
+                <div class="logo">
+                    <a href="index.html">
+                        <img src="logo.jpg" alt="RosyBloom Corporate Logo" onerror="this.style.display='none'">RosyBloom
+                    </a>
+                </div>
                 <nav id="MenuItems">
                     <ul>
                         <li><a href="index.html">Home</a></li>
