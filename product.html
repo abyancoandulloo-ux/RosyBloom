@@ -35,7 +35,9 @@
         /* Navigation Styles */
         header { background-color: #ffffff; box-shadow: 0 4px 25px rgba(184, 29, 74, 0.06); position: sticky; top: 0; z-index: 999; }
         .navbar { display: flex; justify-content: space-between; align-items: center; padding: 20px 0; }
+        
         .logo a { display: flex; align-items: center; text-decoration: none; color: var(--deep-rose); font-family: 'Playfair Display', serif; font-size: 28px; font-weight: 700; letter-spacing: 1px; }
+        .logo img { width: 35px; height: 35px; object-fit: cover; border-radius: 6px; margin-right: 12px; }
         
         nav ul { display: flex; list-style: none; align-items: center; }
         nav ul li { margin-left: 35px; }
@@ -136,20 +138,33 @@
             box-shadow: 0 20px 50px rgba(0,0,0,0.15); animation: fadeInUp 0.5s ease-out;
             position: relative; border-top: 8px solid var(--deep-rose);
         }
-        .receipt-header { text-align: center; margin-bottom: 25px; }
+        .receipt-header { text-align: center; margin-bottom: 20px; }
         .receipt-header i { font-size: 40px; color: #2b8a3e; margin-bottom: 12px; }
         .receipt-header h2 { font-family: 'Playfair Display', serif; color: var(--deep-rose); }
         .receipt-header p { font-size: 13px; color: #706265; margin-top: 4px; }
         
         .receipt-meta { display: flex; justify-content: space-between; font-size: 12px; color: #8c767a; border-bottom: 1px dashed #e8e0e2; padding-bottom: 15px; margin-bottom: 20px; }
         
-        .receipt-items { display: flex; flex-direction: column; gap: 12px; margin-bottom: 20px; }
+        .receipt-items { display: flex; flex-direction: column; gap: 12px; margin-bottom: 15px; }
         .receipt-row { display: flex; justify-content: space-between; font-size: 14px; }
         .receipt-total { border-top: 1px dashed #e8e0e2; padding-top: 15px; margin-top: 15px; font-weight: 700; font-size: 16px; color: var(--deep-rose); }
         
+        /* Order Date Required Field Wrapper */
+        .date-picker-block {
+            background: var(--soft-white); padding: 15px; border-radius: 12px;
+            border: 1px solid rgba(184, 29, 74, 0.1); margin-top: 20px; text-align: left;
+        }
+        .date-picker-block label { display: block; font-size: 12px; font-weight: 600; color: #706265; margin-bottom: 6px; text-transform: uppercase; }
+        .date-picker-block input {
+            width: 100%; padding: 10px; border: 1px solid #d1bfc2; border-radius: 8px;
+            font-size: 14px; color: var(--charcoal); outline: none; background: white;
+            transition: var(--transition-smooth);
+        }
+        .date-picker-block input:focus { border-color: var(--primary-rose); }
+
         .btn-print-close {
             width: 100%; padding: 12px; border-radius: 50px; border: none;
-            background: #2b8a3e; color: white; font-weight: 600; margin-top: 15px;
+            background: #2b8a3e; color: white; font-weight: 600; margin-top: 20px;
             cursor: pointer; transition: var(--transition-smooth); text-transform: uppercase; letter-spacing: 0.5px;
             display: flex; align-items: center; justify-content: center; gap: 8px;
         }
@@ -176,12 +191,7 @@
             <div class="navbar">
                 <div class="logo">
                     <a href="index.html">
-                        <svg width="32" height="32" viewBox="0 0 100 100" style="margin-right: 10px; transform: translateY(2px);">
-                            <path d="M50,25 C40,10 20,20 35,40 C15,45 25,70 50,65 C75,70 85,45 65,40 C80,20 60,10 50,25 Z" fill="#b81d4a"/>
-                            <path d="M50,35 C45,25 35,30 42,42 C30,45 35,60 50,55 C65,60 70,45 58,42 C65,30 55,25 50,35 Z" fill="#ff4d7d"/>
-                            <circle cx="50" cy="46" r="5" fill="#ffffff" opacity="0.3"/>
-                            <path d="M50,63 L50,90 M50,72 Q35,70 38,60 M50,78 Q65,78 62,68" stroke="#2b8a3e" stroke-width="5" stroke-linecap="round" fill="none"/>
-                        </svg>
+                        <img src="logo.jpg" alt="RosyBloom Corporate Logo" onerror="this.style.display='none'">
                         RosyBloom
                     </a>
                 </div>
@@ -236,13 +246,19 @@
             <div class="receipt-header">
                 <i class="fa-solid fa-circle-check"></i>
                 <h2>Order Details</h2>
-                <p>Click below to submit your request via WhatsApp.</p>
+                <p>Verify details and select a delivery/pickup date below.</p>
             </div>
             <div class="receipt-meta">
                 <span id="receiptOrderNum">Receipt #: RB----</span>
                 <span id="receiptDate">Date: --/--/----</span>
             </div>
             <div class="receipt-items" id="receiptItemsList"></div>
+            
+            <div class="date-picker-block">
+                <label for="requiredOrderDeliveryDate">When do you need this fulfillment? *</label>
+                <input type="date" id="requiredOrderDeliveryDate" required>
+            </div>
+
             <button class="btn-print-close" onclick="sendToWhatsAppAndClearCart()">
                 <i class="fa-brands fa-whatsapp"></i> Send Order to Manager
             </button>
@@ -260,7 +276,16 @@
 
         let productsCache = [];
         let shoppingCart = [];
-        let compiledWhatsAppText = "";
+        let dynamicBaseMessage = ""; 
+
+        // Set the minimum selectable date on the input field to today
+        function configureDatePickerLimits() {
+            const dateInput = document.getElementById('requiredOrderDeliveryDate');
+            if (dateInput) {
+                const today = new Date().toISOString().split('T')[0];
+                dateInput.min = today;
+            }
+        }
 
         async function fetchStorefrontCatalog() {
             const grid = document.getElementById('storefrontCatalogContainer');
@@ -413,6 +438,7 @@
             
             document.getElementById('receiptOrderNum').innerText = `Receipt #: ${orderNumber}`;
             document.getElementById('receiptDate').innerText = `Date: ${orderDate}`;
+            document.getElementById('requiredOrderDeliveryDate').value = ""; // Reset date selector values
 
             const receiptContainer = document.getElementById('receiptItemsList');
             receiptContainer.innerHTML = "";
@@ -420,7 +446,7 @@
 
             let textTemplate = `🌸 *New RosyBloom Bouquet Order* 🌸\n\n`;
             textTemplate += `*Order Reference:* ${orderNumber}\n`;
-            textTemplate += `*Date:* ${orderDate}\n`;
+            textTemplate += `*Date Created:* ${orderDate}\n`;
             textTemplate += `-----------------------------------------\n`;
 
             shoppingCart.forEach(item => {
@@ -447,26 +473,46 @@
             receiptContainer.appendChild(totalRow);
 
             textTemplate += `-----------------------------------------\n`;
-            textTemplate += `*Grand Total:* Rs ${runningReceiptTotal.toFixed(2)}`;
+            textTemplate += `*Grand Total:* Rs ${runningReceiptTotal.toFixed(2)}\n`;
             
-            compiledWhatsAppText = encodeURIComponent(textTemplate);
+            // Stash partial text format structure inside temporary global variable storage matching allocations
+            dynamicBaseMessage = textTemplate;
 
             toggleCartDrawer(false);
             document.getElementById('receiptWindowModal').style.display = "flex";
         }
 
         function sendToWhatsAppAndClearCart() {
+            const dateValue = document.getElementById('requiredOrderDeliveryDate').value;
+            
+            // Stop workflow progression if required deadline configuration parameters remain empty
+            if (!dateValue) {
+                alert("Please select the date when you need the product before submitting.");
+                return;
+            }
+
+            // Convert raw date string format from YYYY-MM-DD to a friendly readable string
+            const formattedNeededDate = new Date(dateValue).toLocaleDateString();
+            
+            // Append the selected requested date variable directly onto the base template context structure
+            let finalWhatsAppMessage = dynamicBaseMessage + `*Needed On/By Date:* ${formattedNeededDate}`;
+            const encodedTextPayload = encodeURIComponent(finalWhatsAppMessage);
+
             const managerNumber = "23058389088"; 
-            const outboundLink = `https://api.whatsapp.com/send?phone=${managerNumber}&text=${compiledWhatsAppText}`;
+            const outboundLink = `https://api.whatsapp.com/send?phone=${managerNumber}&text=${encodedTextPayload}`;
             
             window.open(outboundLink, '_blank');
 
+            // Reset local cache stacks
             shoppingCart = [];
             updateCartInterface();
             document.getElementById('receiptWindowModal').style.display = "none";
         }
 
-        document.addEventListener("DOMContentLoaded", fetchStorefrontCatalog);
+        document.addEventListener("DOMContentLoaded", () => {
+            fetchStorefrontCatalog();
+            configureDatePickerLimits();
+        });
         function menutoggle() { document.getElementById("MenuItems").classList.toggle("active"); }
     </script>
 </body>
