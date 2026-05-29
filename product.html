@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Boutique Collections ¦ RosyBloom</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..700;1,400..700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpath d='M50,25 C40,10 20,20 35,40 C15,45 25,70 50,65 C75,70 85,45 65,40 C80,20 60,10 50,25 Z' fill='%23b81d4a'/%3E%3Cpath d='M50,35 C45,25 35,30 42,42 C30,45 35,60 50,55 C65,60 70,45 58,42 C65,30 55,25 50,35 Z' fill='%23ff4d7d'/%3E%3Cpath d='M50,63 L50,90 M50,72 Q35,70 38,60 M50,78 Q65,78 62,68' stroke='%232b8a3e' stroke-width='4' stroke-linecap='round' fill='none'/%3E%3C/svg%3E">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+    <style>
+        :root {
+            --primary-rose: #ff4d7d;
+            --deep-rose: #b81d4a;
+            --soft-white: #fffafb;
+            --charcoal: #2d2527;
+            --transition-smooth: all 0.5s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
+        
+        /* Premium Layered Background Design */
+        body { 
+            background-color: var(--soft-white); 
+            background-image: 
+                radial-gradient(at 0% 0%, rgba(255, 77, 125, 0.03) 0px, transparent 50%),
+                radial-gradient(at 100% 100%, rgba(184, 29, 74, 0.02) 0px, transparent 50%),
+                url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80' viewBox='0 0 80 80'%3E%3Cg fill='%23b81d4a' fill-opacity='0.015'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7z'/%3E%3C/g%3E%3C/svg%3E");
+            color: var(--charcoal); 
+            min-height: 100vh;
+            position: relative;
+        }
+
+        /* Ambient glowing design element behind page elements */
+        body::before {
+            content: ''; position: fixed; top: 25%; right: -100px; width: 400px; height: 400px;
+            background: radial-gradient(circle, rgba(255,77,125,0.06) 0%, transparent 70%);
+            z-index: -1; pointer-events: none; animation: pulseGlow 12s ease-in-out infinite alternate;
+        }
+        
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+        
+        /* Navigation Styles */
+        header { background-color: #ffffff; box-shadow: 0 4px 25px rgba(184, 29, 74, 0.06); position: sticky; top: 0; z-index: 1000; }
+        .navbar { display: flex; justify-content: space-between; align-items: center; padding: 20px 0; }
+        .logo a { display: flex; align-items: center; text-decoration: none; color: var(--deep-rose); font-family: 'Playfair Display', serif; font-size: 28px; font-weight: 700; letter-spacing: 1px; }
+        .logo i { margin-right: 10px; font-size: 24px; color: var(--primary-rose); animation: float 3s ease-in-out infinite; }
+        nav ul { display: flex; list-style: none; }
+        nav ul li { margin-left: 35px; }
+        nav ul li a { text-decoration: none; color: var(--charcoal); font-weight: 500; transition: var(--transition-smooth); position: relative; }
+        nav ul li a:hover { color: var(--deep-rose); }
+        
+        nav ul li a::after {
+            content: ''; position: absolute; bottom: -5px; left: 0; width: 0; height: 2px;
+            background-color: var(--primary-rose); transition: var(--transition-smooth);
+        }
+        nav ul li a:hover::after, nav ul li a.active::after { width: 100%; }
+        .menu-icon { font-size: 24px; color: var(--deep-rose); cursor: pointer; display: none; }
+        
+        /* Search & Filter Toolbar Styling */
+        .filter-toolbar {
+            display: flex; gap: 20px; justify-content: space-between; align-items: center;
+            background: rgba(255, 255, 255, 0.65); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+            padding: 20px 30px; border-radius: 20px; margin: 30px auto 40px;
+            border: 1px solid rgba(184, 29, 74, 0.05); box-shadow: 0 10px 30px rgba(184, 29, 74, 0.02);
+            flex-wrap: wrap; animation: fadeInDown 0.8s ease-out;
+        }
+        .search-wrapper { position: relative; flex: 1; min-width: 260px; }
+        .search-wrapper i { position: absolute; left: 18px; top: 50%; transform: translateY(-50%); color: var(--deep-rose); opacity: 0.6; }
+        .search-input {
+            width: 100%; padding: 14px 14px 14px 48px; border: 1px solid rgba(184, 29, 74, 0.1);
+            border-radius: 30px; outline: none; font-size: 14px; background: #ffffff;
+            transition: var(--transition-smooth); color: var(--charcoal);
+        }
+        .search-input:focus { border-color: var(--primary-rose); box-shadow: 0 0 15px rgba(255, 77, 125, 0.15); }
+        
+        .sort-wrapper { display: flex; align-items: center; gap: 12px; min-width: 220px; }
+        .sort-wrapper label { font-size: 14px; font-weight: 500; color: #706265; white-space: nowrap; }
+        .sort-select {
+            width: 100%; padding: 14px 20px; border: 1px solid rgba(184, 29, 74, 0.1);
+            border-radius: 30px; outline: none; font-size: 14px; background: #ffffff;
+            cursor: pointer; color: var(--charcoal); transition: var(--transition-smooth);
+        }
+        .sort-select:focus { border-color: var(--primary-rose); }
+
+        /* Showroom Grid Section */
+        .product-section { padding: 30px 0 60px; }
+        .product-section h2 { font-family: 'Playfair Display', serif; font-size: 38px; color: var(--deep-rose); text-align: center; margin-bottom: 10px; animation: fadeInDown 0.8s ease-out; }
+        .product-row { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 30px; }
+        
+        /* Interactive Cozy Product Cards */
+        .product-col { 
+            background: rgba(255, 255, 255, 0.9); padding: 20px; border-radius: 15px; 
+            box-shadow: 0 5px 20px rgba(184, 29, 74, 0.03); 
+            border: 1px solid rgba(255, 77, 125, 0.05); 
+            display: flex; flex-direction: column; justify-content: space-between;
+            cursor: pointer; transition: var(--transition-smooth);
+            opacity: 0; transform: translateY(20px);
+            animation: fadeInUp 0.6s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+        }
+        .product-col:hover {
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 15px 35px rgba(255, 77, 125, 0.12);
+            border-color: rgba(255, 77, 125, 0.3);
+            background: #ffffff;
+        }
+        .product-col img { width: 100%; height: 250px; object-fit: cover; border-radius: 10px; margin-bottom: 15px; transition: var(--transition-smooth); }
+        .product-col:hover img { transform: scale(1.03); }
+        .product-col h4 { font-family: 'Playfair Display', serif; font-size: 18px; margin-bottom: 8px; color: var(--charcoal); transition: var(--transition-smooth); }
+        .product-col:hover h4 { color: var(--deep-rose); }
+        .product-col p { font-size: 13px; color: #706265; margin-bottom: 15px; line-height: 1.5; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+        .product-col .price { font-weight: 600; color: var(--deep-rose); font-size: 15px; }
+        
+        /* Elegant Pop-Out Modal Window */
+        .info-modal-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(45, 37, 39, 0.3); z-index: 10000; display: flex; 
+            justify-content: center; align-items: center; opacity: 0; pointer-events: none; transition: var(--transition-smooth);
+        }
+        .info-modal-overlay.active { opacity: 1; pointer-events: auto; backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); }
+        
+        .info-modal-box {
+            background: #ffffff; width: 90%; max-width: 650px; border-radius: 24px; padding: 30px; position: relative;
+            transform: scale(0.8) translateY(30px); transition: var(--transition-smooth); max-height: 90vh; overflow-y: auto;
+        }
+        .info-modal-overlay.active .info-modal-box { transform: scale(1) translateY(0); box-shadow: 0 25px 60px rgba(184, 29, 74, 0.15); }
+        
+        .modal-close-btn {
+            position: absolute; top: 20px; right: 20px; width: 36px; height: 36px; border-radius: 50%;
+            background: var(--soft-white); border: none; cursor: pointer; display: flex; 
+            justify-content: center; align-items: center; color: var(--charcoal); font-size: 16px; transition: var(--transition-smooth); z-index: 10;
+        }
+        .modal-close-btn:hover { background: var(--primary-rose); color: #fff; transform: rotate(90deg); }
+        
+        .modal-body img { width: 100%; height: 320px; object-fit: cover; border-radius: 16px; margin-bottom: 20px; }
+        .modal-body h3 { font-family: 'Playfair Display', serif; font-size: 28px; color: var(--deep-rose); margin-bottom: 10px; }
+        .modal-body .modal-price { font-size: 20px; font-weight: 700; color: var(--charcoal); margin-bottom: 15px; }
+        .modal-body p { font-size: 15px; color: #5c4d50; line-height: 1.6; margin-bottom: 25px; white-space: pre-line; }
+        
+        .modal-action-btn {
+            display: block; width: 100%; text-align: center; background: linear-gradient(45deg, var(--deep-rose), var(--primary-rose));
+            color: #fff; text-decoration: none; padding: 14px; border-radius: 50px; font-weight: 600; transition: var(--transition-smooth);
+            box-shadow: 0 5px 15px rgba(184, 29, 74, 0.2);
+        }
+        .modal-action-btn:hover { transform: translateY(-3px); box-shadow: 0 8px 25px rgba(184, 29, 74, 0.4); }
+
+        /* Multi-Column OG Footer */
+        footer { background-color: #241418; color: #d1bfc2; padding: 80px 0 30px; border-top: 4px solid var(--deep-rose); margin-top: 60px; text-align: left; }
+        .footer-row { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 40px; margin-bottom: 50px; }
+        .footer-col { flex: 1; min-width: 250px; }
+        .footer-col h3 { font-family: 'Playfair Display', serif; color: #fff; font-size: 22px; margin-bottom: 25px; }
+        .footer-col p { font-size: 14px; color: #a69296; margin-bottom: 20px; line-height: 1.8; font-weight: 300; }
+        .footer-col ul { list-style: none; }
+        .footer-col ul li { margin-bottom: 12px; }
+        .footer-col ul li a { color: #a69296; text-decoration: none; transition: 0.3s; font-size: 14px; }
+        .footer-col ul li a:hover { color: var(--primary-rose); padding-left: 5px; }
+        .social-icons { display: flex; gap: 15px; margin-top: 20px; }
+        .social-icons a { width: 35px; height: 35px; background: #382328; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #fff; transition: 0.3s; text-decoration: none; }
+        .social-icons a:hover { background: var(--primary-rose); transform: scale(1.1); }
+        .copyright { text-align: center; padding-top: 30px; border-top: 1px solid #382328; font-size: 13px; color: #6e5a5e; }
+        
+        /* Keyframe Animations */
+        @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(25px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes pulseGlow {
+            0% { transform: scale(1) translate(0, 0); }
+            100% { transform: scale(1.15) translate(-30px, 20px); }
+        }
+
+        @media (max-width: 768px) { 
+            .menu-icon { display: block; } 
+            nav { position: absolute; top: 100%; left: 0; width: 100%; background-color: #ffffff; display: none; box-shadow: 0 10px 20px rgba(0,0,0,0.05); } 
+            nav.active { display: block; } 
+            nav ul { flex-direction: column; align-items: center; padding: 20px 0; } 
+            nav ul li { margin: 15px 0; margin-left: 0; } 
+            .modal-body img { height: 220px; }
+            .filter-toolbar { flex-direction: column; gap: 15px; padding: 20px; }
+            .search-wrapper, .sort-wrapper { width: 100%; }
+            .footer-col { flex-basis: 100%; text-align: center; }
+            .social-icons { justify-content: center; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="container">
+            <div class="navbar">
+                <div class="logo"><a href="index.html"><i class="fa-solid fa-seedling"></i>RosyBloom</a></div>
+                <nav id="MenuItems">
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="product.html" class="active">Products</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                        <li><a href="manager.html" style="color: var(--dark-rose); font-weight: 600;"><i class="fa-solid fa-lock"></i> Manager Hub</a></li>
+                    </ul>
+                </nav>
+                <i class="fa-solid fa-bars menu-icon" onclick="menutoggle()"></i>
+            </div>
+        </div>
+    </header>
+
+    <section class="product-section">
+        <div class="container">
+            <h2>Our Floral Collection</h2>
+            
+            <div class="filter-toolbar">
+                <div class="search-wrapper">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                    <input type="text" class="search-input" id="showroomSearchInput" placeholder="Search bouquets by name..." oninput="processShowroomFilters()">
+                </div>
+                <div class="sort-wrapper">
+                    <label for="showroomSortSelect">Sort By:</label>
+                    <select class="sort-select" id="showroomSortSelect" onchange="processShowroomFilters()">
+                        <option value="newest">Newest Arrivals</option>
+                        <option value="price-asc">Price: Low to High</option>
+                        <option value="price-desc">Price: High to Low</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="product-row" id="liveShowroomGrid">
+                <p style="text-align: center; grid-column: 1/-1; color: #8c767a;">Arranging the floral gallery displays...</p>
+            </div>
+        </div>
+    </section>
+
+    <div class="info-modal-overlay" id="productModalOverlay" onclick="closeProductModal(event)">
+        <div class="info-modal-box">
+            <button class="modal-close-btn" onclick="closeModalDirect()"><i class="fa-solid fa-xmark"></i></button>
+            <div class="modal-body" id="modalTargetBody"></div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="container">
+            <div class="footer-row">
+                <div class="footer-col">
+                    <h3>RosyBloom</h3>
+                    <p>Elevating floral design to an art form. We specialize in bespoke arrangements that capture the essence of life's most beautiful chapters.</p>
+                    <div class="social-icons">
+                        <a href="#"><i class="fa-brands fa-instagram"></i></a>
+                        <a href="#"><i class="fa-brands fa-facebook-f"></i></a>
+                        <a href="#"><i class="fa-brands fa-pinterest-p"></i></a>
+                    </div>
+                </div>
+                <div class="footer-col">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="product.html">Collections</a></li>
+                        <li><a href="contact.html">Order Inquiry</a></li>
+                        <li><a href="manager.html">Manager Portal</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h3>Our Studio</h3>
+                    <p><i class="fa-solid fa-location-dot" style="color: var(--primary-rose); margin-right: 10px;"></i> Avenue Belle Rose Mauritius</p>
+                    <p><i class="fa-solid fa-phone" style="color: var(--primary-rose); margin-right: 10px;"></i> +230 5923 1331</p>
+                    <p><i class="fa-solid fa-envelope" style="color: var(--primary-rose); margin-right: 10px;"></i> sabahdulloo@gmail.com</p>
+                </div>
+            </div>
+            <div class="copyright">
+                <p>&copy; 2026 RosyBloom Luxury Florals. Handcrafted with passion.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        if (typeof supabase === 'undefined') {
+            alert("CRITICAL ERROR: Showroom cannot access Supabase CDNs.");
+        }
+
+        const SUPABASE_URL = "https://scyfehulvdjwdrtrtbhi.supabase.co";
+        const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNjeWZlaHVsdmRqd2RydHJ0YmhpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzk5ODY3NjEsImV4cCI6MjA5NTU2Mjc2MX0.owkpVPA47AeYFCW783ztHOLqPnjxBrNDeAPmqXhilE8";
+        const client = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+        let databaseMasterCache = []; // Golden source from server
+        let localFlowersCache = [];    // Filtered / sorted working list
+
+        async function fetchLiveShowroom() {
+            try {
+                const { data: flowers, error } = await client.from('flowers').select('*');
+
+                if (error) {
+                    document.getElementById('liveShowroomGrid').innerHTML = `<p style="color:red; grid-column:1/-1; text-align:center;">Error: ${error.message}</p>`;
+                    return;
+                }
+
+                databaseMasterCache = flowers || [];
+                processShowroomFilters(); // Initial render setup and application of defaults
+
+            } catch (err) {
+                alert("Showroom script crash: " + err.message);
+            }
+        }
+
+        // --- CLIENT SIDE SEARCH & SORT ENGINES ---
+        function processShowroomFilters() {
+            const displayGrid = document.getElementById('liveShowroomGrid');
+            const searchString = document.getElementById('showroomSearchInput').value.toLowerCase().trim();
+            const sortingCriteria = document.getElementById('showroomSortSelect').value;
+
+            // 1. Process Filtering Actions
+            let filteredResults = databaseMasterCache.filter(item => {
+                const itemName = (item.name || '').toLowerCase();
+                return itemName.includes(searchString);
+            });
+
+            // 2. Process Order Configuration Actions
+            if (sortingCriteria === 'price-asc') {
+                filteredResults.sort((a, b) => parseFloat(a.price || 0) - parseFloat(b.price || 0));
+            } else if (sortingCriteria === 'price-desc') {
+                filteredResults.sort((a, b) => parseFloat(b.price || 0) - parseFloat(a.price || 0));
+            } else if (sortingCriteria === 'newest') {
+                // Primary sorting configuration using backend timestamp chains
+                filteredResults.sort((a, b) => new Date(b.created_at || 0) - new Date(a.created_at || 0));
+            }
+
+            localFlowersCache = filteredResults;
+            renderShowroomCards(displayGrid, localFlowersCache);
+        }
+
+        function renderShowroomCards(container, list) {
+            container.innerHTML = ""; 
+
+            if (list.length === 0) {
+                container.innerHTML = `<p style="text-align:center; color:#8c767a; grid-column: 1/-1; padding: 40px 0;">No beautiful arrangements match your criteria.</p>`;
+                return;
+            }
+
+            list.forEach((flower, index) => {
+                const productCard = document.createElement('div');
+                productCard.className = 'product-col';
+                productCard.setAttribute('onclick', `openProductModal(${index})`);
+                productCard.style.animationDelay = `${index * 0.05}s`;
+                
+                productCard.innerHTML = `
+                    <div>
+                        <img src="${flower.image}" alt="${flower.name || 'Flower Item'}" onerror="this.src='https://images.unsplash.com/photo-1526047932273-341f2a7631f9'">
+                        <h4>${flower.name || 'Untitled Bouquet'}</h4>
+                        <p>${flower.description || 'Fresh arrangement design.'}</p>
+                    </div>
+                    <div class="price">Rs ${parseFloat(flower.price).toFixed(2)}</div>
+                `;
+                container.appendChild(productCard);
+            });
+        }
+
+        // --- POP-OUT MODAL LOGIC CONTROLLERS ---
+        function openProductModal(index) {
+            const flower = localFlowersCache[index];
+            if (!flower) return;
+
+            const modalBody = document.getElementById('modalTargetBody');
+            
+            modalBody.innerHTML = `
+                <img src="${flower.image}" alt="${flower.name}" onerror="this.src='https://images.unsplash.com/photo-1526047932273-341f2a7631f9'">
+                <h3>${flower.name || 'Untitled Bouquet'}</h3>
+                <div class="modal-price">Rs ${parseFloat(flower.price).toFixed(2)}</div>
+                <p>${flower.description || 'No additional specifications provided for this bouquet collection arrangement.'}</p>
+                <a href="contact.html?item=${encodeURIComponent(flower.name)}" class="modal-action-btn">Inquire About This Arrangement</a>
+            `;
+
+            document.getElementById('productModalOverlay').classList.add('active');
+            document.body.style.overflow = "hidden";
+        }
+
+        function closeModalDirect() {
+            document.getElementById('productModalOverlay').classList.remove('active');
+            document.body.style.overflow = "auto";
+        }
+
+        function closeProductModal(event) {
+            if (event.target.id === "productModalOverlay") {
+                closeModalDirect();
+            }
+        }
+
+        document.addEventListener("DOMContentLoaded", fetchLiveShowroom);
+        function menutoggle() { document.getElementById("MenuItems").classList.toggle("active"); }
+    </script>
+</body>
+</html>
