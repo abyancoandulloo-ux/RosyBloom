@@ -150,14 +150,14 @@
 
         /* --- Contact Section Layout --- */
         .contact-wrapper {
-            padding: 80px 0 40px 0;
+            padding: 80px 0;
         }
 
         .contact-grid {
             display: grid;
             grid-template-columns: 1fr 1.2fr;
             gap: 50px;
-            align-items: center;
+            align-items: stretch;
         }
 
         /* --- Contact Info Cards --- */
@@ -165,6 +165,7 @@
             display: flex;
             flex-direction: column;
             gap: 25px;
+            justify-content: center;
         }
 
         .info-card {
@@ -281,46 +282,113 @@
             color: var(--primary-pink);
         }
 
-        /* --- Maps Interactive Studio Section --- */
-        .studio-map-section {
-            padding: 20px 0 80px 0;
-        }
-
-        .map-instruction-text {
-            text-align: center;
-            margin-bottom: 25px;
-        }
-
-        .map-instruction-text h2 {
-            font-family: 'Playfair Display', serif;
-            font-size: 28px;
-            color: var(--charcoal);
-            margin-bottom: 8px;
-        }
-
-        .map-instruction-text p {
-            font-size: 15px;
-            color: #666;
-            max-width: 550px;
-            margin: 0 auto;
-            line-height: 24px;
-        }
-
-        .map-card-frame {
+        /* --- Social Media Hub Section --- */
+        .social-hub-section {
             background-color: #ffffff;
-            border: 1px solid rgba(255, 107, 139, 0.12);
-            box-shadow: 0 12px 35px rgba(216, 27, 96, 0.04);
-            border-radius: 24px;
-            padding: 20px;
-            overflow: hidden;
+            border-top: 1px solid rgba(255, 107, 139, 0.1);
+            padding: 80px 0;
+            text-align: center;
         }
 
-        .map-card-frame iframe {
-            width: 100%;
-            height: 450px;
-            border: 0;
-            border-radius: 16px;
-            display: block;
+        .social-hub-title {
+            margin-bottom: 40px;
+        }
+
+        .social-hub-title h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 36px;
+            color: var(--charcoal);
+            margin-bottom: 10px;
+        }
+
+        .social-hub-title p {
+            font-size: 16px;
+            color: #666;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .social-cards-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .social-connect-card {
+            background: linear-gradient(145deg, #ffffff, #fffafd);
+            border: 1px solid rgba(255, 107, 139, 0.15);
+            border-radius: 20px;
+            padding: 40px 30px;
+            text-align: center;
+            text-decoration: none;
+            color: inherit;
+            transition: var(--transition-smooth);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.02);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .social-connect-card i {
+            font-size: 45px;
+            margin-bottom: 15px;
+            transition: var(--transition-smooth);
+        }
+
+        .social-connect-card.instagram i {
+            background: -webkit-linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .social-connect-card.tiktok i {
+            color: #000000;
+        }
+
+        .social-connect-card h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 22px;
+            margin-bottom: 8px;
+            color: var(--charcoal);
+        }
+
+        .social-connect-card p {
+            font-size: 14px;
+            color: #777;
+            margin-bottom: 20px;
+            line-height: 20px;
+        }
+
+        .social-btn {
+            display: inline-block;
+            padding: 10px 24px;
+            border-radius: 30px;
+            font-size: 14px;
+            font-weight: 500;
+            color: #fff;
+            transition: var(--transition-smooth);
+        }
+
+        .social-connect-card.instagram .social-btn {
+            background: linear-gradient(45deg, #e6683c, #bc1888);
+        }
+
+        .social-connect-card.tiktok .social-btn {
+            background-color: #111;
+        }
+
+        .social-connect-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 15px 30px rgba(216, 27, 96, 0.08);
+            border-color: var(--primary-pink);
+        }
+
+        .social-connect-card:hover .social-btn {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.15);
         }
 
         /* --- Footer Section --- */
@@ -441,7 +509,7 @@
             nav.active {
                 display: block;
             }
-            .contact-grid {
+            .contact-grid, .social-cards-grid {
                 grid-template-columns: 1fr;
                 gap: 40px;
             }
@@ -456,9 +524,6 @@
             nav ul li {
                 margin: 15px 0;
                 margin-left: 0;
-            }
-            .map-card-frame iframe {
-                height: 350px;
             }
         }
     </style>
@@ -501,14 +566,6 @@
                 <div class="info-container">
                     
                     <div class="info-card">
-                        <div class="icon-box"><i class="fa-solid fa-location-dot"></i></div>
-                        <div class="info-text">
-                            <h3>Boutique Atelier</h3>
-                            <p>35 Belle Rose Avenue,<br>Quatre Bornes, Mauritius</p>
-                        </div>
-                    </div>
-
-                    <div class="info-card">
                         <div class="icon-box"><i class="fa-solid fa-phone"></i></div>
                         <div class="info-text">
                             <h3>Call Sabah Dulloo,<br> on Whatsapp</h3>
@@ -517,10 +574,10 @@
                     </div>
 
                     <div class="info-card">
-                        <div class="icon-box"><i class="fa-solid fa-envelope"></i></div>
+                        <div class="icon-box"><i class="fa-solid fa-comments"></i></div>
                         <div class="info-text">
-                            <h3>Electronic Sourcing</h3>
-                            <p>For custom consultations and requests:<br><strong>sabahdulloo@gmail.com</strong></p>
+                            <h3>Instant Consultations</h3>
+                            <p>Drop us a direct message on our social profiles for prompt custom ordering support.</p>
                         </div>
                     </div>
 
@@ -544,14 +601,27 @@
         </div>
     </section>
 
-    <section class="studio-map-section">
+    <section class="social-hub-section">
         <div class="container">
-            <div class="map-instruction-text">
-                <h2>Order Pick-Up Location</h2>
-                <p>If you opted for boutique collection, find your way to our main atelier mapped below. Please have your unique order confirmation details ready upon your arrival.</p>
+            <div class="social-hub-title">
+                <h2>Follow Our Floral Journey</h2>
+                <p>See our latest bespoke arrangements, behind-the-scenes design processes, and aesthetic botanical inspiration updated daily.</p>
             </div>
-            <div class="map-card-frame">
-                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3742.062035987178!2d57.48138161539272!3d-20.25435368642273!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x217c5b3dceaa671f%3A0x3d8bbf1a1afc24a3!2s35%20Belle%20Rose%20Ave%2C%20Quatre%20Bornes!5e0!3m2!1sen!2smu!4v1680000000000!5m2!1sen!2smu" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+            
+            <div class="social-cards-grid">
+                <a href="https://www.instagram.com" target="_blank" class="social-connect-card instagram">
+                    <i class="fa-brands fa-instagram"></i>
+                    <h3>Instagram</h3>
+                    <p>Explore our curated gallery of premium bouquets and live event showcases.</p>
+                    <span class="social-btn">Follow @RosyBloom</span>
+                </a>
+
+                <a href="https://www.tiktok.com" target="_blank" class="social-connect-card tiktok">
+                    <i class="fa-brands fa-tiktok"></i>
+                    <h3>TikTok</h3>
+                    <p>Watch our floral artisans hand-craft luxury arrangements in real-time.</p>
+                    <span class="social-btn">Watch Videos</span>
+                </a>
             </div>
         </div>
     </section>
@@ -577,8 +647,8 @@
                     <p style="margin-bottom: 15px;">Follow our daily arrangement updates on social platforms.</p>
                     <div class="social-icons">
                         <a href="#"><i class="fa-brands fa-facebook-f"></i></a>
-                        <a href="#"><i class="fa-brands fa-instagram"></i></a>
-                        <a href="#"><i class="fa-brands fa-pinterest-p"></i></a>
+                        <a href="https://www.instagram.com" target="_blank"><i class="fa-brands fa-instagram"></i></a>
+                        <a href="https://www.tiktok.com" target="_blank"><i class="fa-brands fa-tiktok"></i></a>
                     </div>
                 </div>
             </div>
