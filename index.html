@@ -1,16 +1,98 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <!-- ===== ADVANCED SEO & META ===== -->
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>RosyBloom · 3D Cinematic Floral Atelier</title>
 
-    <!-- Google Fonts -->
+    <!-- Primary Meta Tags -->
+    <title>RosyBloom · Luxury Floral Atelier in Mauritius | 3D Cinematic Experience</title>
+    <meta name="description" content="RosyBloom is an online Mauritian floral atelier offering bespoke, handcrafted bouquets for life's grandest moments. Explore our collection of eternal floral art." />
+    <meta name="keywords" content="florist Mauritius, luxury flowers, bespoke bouquets, floral atelier, artisan flowers, wedding flowers, eternal floral art, RosyBloom" />
+    <link rel="canonical" href="https://rosybloom.com/index.html" />
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://rosybloom.com/" />
+    <meta property="og:title" content="RosyBloom · Luxury Floral Atelier in Mauritius" />
+    <meta property="og:description" content="Handcrafted eternal floral art. Bespoke bouquets for your grandest moments." />
+    <meta property="og:image" content="https://rosybloom.com/logo.jpg" />
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="RosyBloom · Luxury Floral Atelier in Mauritius" />
+    <meta name="twitter:description" content="Handcrafted eternal floral art. Bespoke bouquets for your grandest moments." />
+    <meta name="twitter:image" content="https://rosybloom.com/logo.jpg" />
+
+    <!-- JSON-LD Structured Data -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "Organization",
+        "name": "RosyBloom",
+        "url": "https://rosybloom.com",
+        "logo": "https://rosybloom.com/logo.jpg",
+        "description": "RosyBloom is an online Mauritian floral atelier offering bespoke, handcrafted bouquets.",
+        "address": {
+            "@type": "PostalAddress",
+            "addressLocality": "Belle Rose",
+            "addressRegion": "Mauritius",
+            "addressCountry": "MU"
+        },
+        "contactPoint": {
+            "@type": "ContactPoint",
+            "telephone": "+230-5838-9088",
+            "contactType": "Sales",
+            "availableLanguage": ["English", "French"]
+        },
+        "sameAs": [
+            "https://www.instagram.com/rosybloom",
+            "https://www.facebook.com/rosybloom"
+        ]
+    }
+    </script>
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "url": "https://rosybloom.com",
+        "name": "RosyBloom",
+        "description": "Luxury floral atelier in Mauritius offering handcrafted eternal bouquets.",
+        "potentialAction": {
+            "@type": "SearchAction",
+            "target": "https://rosybloom.com/search?q={search_term_string}",
+            "query-input": "required name=search_term_string"
+        }
+    }
+    </script>
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "Product",
+        "name": "RosyBloom Eternal Bouquet",
+        "description": "Handcrafted artisan bouquet made from seasonally sourced florals, designed to last.",
+        "brand": {
+            "@type": "Brand",
+            "name": "RosyBloom"
+        },
+        "offers": {
+            "@type": "AggregateOffer",
+            "priceCurrency": "MUR",
+            "lowPrice": "800",
+            "highPrice": "5000",
+            "offerCount": "12"
+        }
+    }
+    </script>
+
+    <!-- Favicon -->
+    <link rel="icon" href="logo-icon.ico" type="image/x-icon" />
+    <link rel="shortcut icon" href="logo-icon.ico" />
+
+    <!-- Fonts & Icons -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet" />
-
-    <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
 
     <style>
@@ -410,7 +492,7 @@
             }
         }
 
-        /* ----- footer ----- */
+        /* ----- footer with "made with Fuzzy Wire" badge ----- */
         footer {
             background: #080808;
             color: rgba(255, 255, 255, 0.5);
@@ -488,6 +570,27 @@
             font-size: 0.75rem;
             color: rgba(255, 255, 255, 0.25);
             margin-top: 2rem;
+        }
+
+        /* "made with Fuzzy Wire" badge – small, minimal */
+        .fw-badge {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.04);
+            padding: 0.3rem 1rem;
+            border-radius: 40px;
+            font-size: 0.65rem;
+            letter-spacing: 0.5px;
+            color: rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.04);
+            backdrop-filter: blur(4px);
+            transition: 0.3s;
+            text-decoration: none;
+            margin-top: 0.5rem;
+        }
+        .fw-badge:hover {
+            color: rgba(255, 255, 255, 0.6);
+            border-color: rgba(255, 77, 125, 0.2);
+            background: rgba(255, 77, 125, 0.05);
         }
 
         /* ----- responsive adjustments ----- */
@@ -619,7 +722,7 @@
             <!-- glassmorphism nav -->
             <nav class="navbar-3d">
                 <a href="index.html" class="logo-3d">
-                    <img src="logo.jpg" alt="RosyBloom" onerror="this.style.display='none'" />
+                    <img src="logo.jpg" alt="RosyBloom - Luxury Floral Atelier" onerror="this.style.display='none'" />
                     <span>RosyBloom<sup>®</sup></span>
                 </a>
                 <ul class="nav-links-3d" id="navLinks">
@@ -658,7 +761,7 @@
                     </div>
                     <div class="hero-3d-visual">
                         <div class="hero-img-wrapper">
-                            <img src="logo.jpg" alt="Exquisite Floral Design" />
+                            <img src="logo.jpg" alt="Exquisite Floral Design - RosyBloom" />
                         </div>
                     </div>
                 </div>
@@ -666,7 +769,7 @@
         </div>
     </div>
 
-    <!-- footer -->
+    <!-- footer with "made with Fuzzy Wire" -->
     <footer>
         <div class="container">
             <div class="footer-row">
@@ -674,9 +777,13 @@
                     <h3>RosyBloom</h3>
                     <p>Elevating floral design to an art form. We specialize in bespoke arrangements that capture the essence of life's most beautiful chapters.</p>
                     <div class="social-icons">
-                        <a href="#"><i class="fa-brands fa-instagram"></i></a>
-                        <a href="#"><i class="fa-brands fa-facebook-f"></i></a>
-                        <a href="#"><i class="fa-brands fa-pinterest-p"></i></a>
+                        <a href="#" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+                        <a href="#" aria-label="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
+                        <a href="#" aria-label="Pinterest"><i class="fa-brands fa-pinterest-p"></i></a>
+                    </div>
+                    <!-- "made with Fuzzy Wire" badge -->
+                    <div style="margin-top:1.2rem;">
+                        <span class="fw-badge"><i class="fa-regular fa-heart" style="color:#ff4d7d;margin-right:6px;"></i> made with Fuzzy Wire</span>
                     </div>
                 </div>
                 <div class="footer-col">
@@ -692,7 +799,7 @@
                     <h3>Our Studio</h3>
                     <p><i class="fa-solid fa-location-dot" style="color:#ff4d7d;margin-right:8px;"></i> Avenue Belle Rose, Mauritius</p>
                     <p><i class="fa-solid fa-phone" style="color:#ff4d7d;margin-right:8px;"></i> +230 5838 9088</p>
-                    <p><i class="fa-solid fa-envelope" style="color:#ff4d7d;margin-right:8px;"></i> </p>
+                    <p><i class="fa-solid fa-envelope" style="color:#ff4d7d;margin-right:8px;"></i> sabahdulloo@gmail.com</p>
                 </div>
             </div>
             <div class="copyright">
