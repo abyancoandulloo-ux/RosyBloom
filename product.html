@@ -667,18 +667,18 @@
                 </select>
             </div>
 
-            <!-- Date picker -->
+            <!-- Date picker – blocks the next 5 days -->
             <div class="order-field-block">
                 <label for="requiredOrderDeliveryDate">When do you need this fulfillment? *</label>
                 <input type="date" id="requiredOrderDeliveryDate" required />
             </div>
 
-            <!-- Notice -->
+            <!-- Notice updated to reflect 5-day lead time -->
             <div class="notice-box">
                 <i class="fa-solid fa-circle-info"></i>
                 <strong>Important:</strong><br> Any custom changes to the bouquets can be done via WhatsApp.<br />
                 Payment will be done via Juice; the Juice number will be sent via WhatsApp.<br>
-                Orders should be placed at least one week in advanced
+                Orders should be placed at least <strong>5 days</strong> in advance.
             </div>
 
             <button class="btn-print-close" onclick="sendToWhatsAppAndClearCart()">
@@ -701,12 +701,15 @@
         let shoppingCart = [];
         let dynamicBaseMessage = "";
 
-        // Set the minimum selectable date on the input field to today
+        // Set the minimum selectable date to 5 days from today (blocks the next 5 days)
         function configureDatePickerLimits() {
             const dateInput = document.getElementById('requiredOrderDeliveryDate');
             if (dateInput) {
-                const today = new Date().toISOString().split('T')[0];
-                dateInput.min = today;
+                const today = new Date();
+                const fiveDaysFromNow = new Date(today);
+                fiveDaysFromNow.setDate(today.getDate() + 5);
+                const minDate = fiveDaysFromNow.toISOString().split('T')[0];
+                dateInput.min = minDate;
             }
         }
 
@@ -908,6 +911,9 @@
 
             toggleCartDrawer(false);
             document.getElementById('receiptWindowModal').style.display = "flex";
+
+            // Re-apply the date picker limit when the modal opens
+            configureDatePickerLimits();
         }
 
         function sendToWhatsAppAndClearCart() {
@@ -919,7 +925,20 @@
                 return;
             }
 
-            const formattedNeededDate = new Date(dateValue).toLocaleDateString();
+            // Validate that the selected date is at least 5 days from today
+            const today = new Date();
+            const fiveDaysFromNow = new Date(today);
+            fiveDaysFromNow.setDate(today.getDate() + 5);
+            fiveDaysFromNow.setHours(0, 0, 0, 0);
+
+            const selectedDate = new Date(dateValue + 'T00:00:00');
+
+            if (selectedDate < fiveDaysFromNow) {
+                alert("Please select a date that is at least 5 days from today.");
+                return;
+            }
+
+            const formattedNeededDate = selectedDate.toLocaleDateString();
 
             // Build the final message including the method, date, and the static notice
             let finalWhatsAppMessage = dynamicBaseMessage;
